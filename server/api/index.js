@@ -3,22 +3,21 @@ const http = require('http');
 const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
-
 const { Server } = require("socket.io");
 const { PrismaClient } = require('@prisma/client');
+const serverless = require('serverless-http'); // Added
 
 const app = express();
 const server = http.createServer(app);
-
 const io = new Server(server, {
   cors: {
-    origin: "https://munchkin-rooms.vercel.app", // Ensure no trailing slash here
+    origin: "https://munchkin-rooms.vercel.app", // Adjust as needed
     methods: ["GET", "POST"]
   }
 });
 
 app.use(cors({
-  origin: "https://munchkin-rooms.vercel.app", // Ensure no trailing slash here
+  origin: "https://munchkin-rooms.vercel.app", // Adjust as needed
   methods: ["GET", "POST"]
 }));
 
@@ -127,9 +126,8 @@ io.on('connection', (socket) => {
 app.use(express.static(path.join(__dirname, '../client/munchkin/dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/munchkin', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/munchkin/dist', 'index.html'));
 });
 
-server.listen(3001, () => {
-  console.log('listening on *:3001');
-});
+// Export serverless handler
+module.exports.handler = serverless(app); 
