@@ -41,6 +41,7 @@ function App() {
 
       // Handle receiving initial data
       const handleInitialData = (existingPlayers) => {
+        console.log('Received initial data:', existingPlayers);
         const updatedPlayers = {};
         existingPlayers.forEach(({ name, level, gear }) => {
           updatedPlayers[name] = { level, gear };
@@ -68,6 +69,8 @@ function App() {
   }, [socket]);
 
   const joinRoom = useCallback(() => {
+    console.log(`Joining room: ${room}, name: ${name}, level: ${level}, gear: ${gear}`);
+    
     if (room && name) {
       socket.emit('join_room', { room, name, level, gear });
       setConnected(true); // Mark as connected
