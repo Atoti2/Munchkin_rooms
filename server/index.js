@@ -12,13 +12,13 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*", // Ensure no trailing slash here
+    origin: "https://munchkin-rooms.vercel.app", // Ensure no trailing slash here
     methods: ["GET", "POST"]
   }
 });
 
 app.use(cors({
-  origin: "*", // Ensure no trailing slash here
+  origin: "https://munchkin-rooms.vercel.app", // Ensure no trailing slash here
   methods: ["GET", "POST"]
 }));
 
