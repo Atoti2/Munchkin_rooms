@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     // Initialize socket connection
     const socketInstance = io(SOCKET_URL, {
-      transports: ['websocket'], // Use WebSocket as the primary transport
+      //transports: ['websocket'],  Use WebSocket as the primary transport
     });
     setSocket(socketInstance);
 
