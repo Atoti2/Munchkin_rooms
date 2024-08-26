@@ -12,7 +12,7 @@ function App() {
   const [connected, setConnected] = useState(false);
 
   // Use environment variable for socket URL
-  const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "http://localhost:3001";
+  const SOCKET_URL = "http://localhost:3001";
 
   useEffect(() => {
     // Initialize socket connection
