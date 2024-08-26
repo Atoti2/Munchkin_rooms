@@ -5,14 +5,14 @@
       "src": "client/munchkin/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "../client/munchkin/dist" 
+        "distDir": "/client/munchkin/dist" 
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "../client/munchkin/dist/$1"
+      "dest": "/client/munchkin/dist/$1"
     }
   ]
 }
