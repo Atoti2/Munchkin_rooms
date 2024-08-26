@@ -9,16 +9,19 @@ function App() {
   const [room, setRoom] = useState('');
   const [players, setPlayers] = useState({});
   const [roomFull, setRoomFull] = useState(false);
-  const [left, setLeft] = useState(false)
-  const [connected, setConnected] =useState(false)
+  const [left, setLeft] = useState(false);
+  const [connected, setConnected] = useState(false);
 
+  // Use environment variable for socket URL
   const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "http://localhost:3001";
 
   useEffect(() => {
     // Initialize socket connection
-    const socketInstance = io.connect(SOCKET_URL);
+    const socketInstance = io(SOCKET_URL, {
+      transports: ['websocket'], // Use WebSocket as the primary transport
+    });
     setSocket(socketInstance);
-  
+
     // Clean up socket connection on component unmount
     return () => {
       socketInstance.disconnect();
@@ -67,11 +70,14 @@ function App() {
   const joinRoom = useCallback(() => {
     if (room && name) {
       socket.emit('join_room', { room, name, level, gear });
+      setConnected(true); // Mark as connected
     }
   }, [room, name, level, gear, socket]);
 
   const leaveRoom = () => {
     socket.emit('leave_room', { room, name });
+    setLeft(true); // Mark as left
+    setConnected(false); // Mark as disconnected
   };
 
   const sendChanges = useCallback(() => {
@@ -85,32 +91,20 @@ function App() {
   }, [level, gear, sendChanges]);
 
   const incrementLevel = () => {
-    setLevel(prevLevel => {
-      const newLevel = Math.max(prevLevel + 1, 1); // Prevent level from going below 1
-      return newLevel;
-    });
+    setLevel(prevLevel => Math.max(prevLevel + 1, 1)); // Prevent level from going below 1
   };
 
   const decrementLevel = () => {
-    setLevel(prevLevel => {
-      const newLevel = Math.max(prevLevel - 1, 1); // Prevent level from going below 1
-      return newLevel;
-    });
+    setLevel(prevLevel => Math.max(prevLevel - 1, 1)); // Prevent level from going below 1
   };
 
   const incrementGear = () => {
-    setGear(prevGear => {
-      const newGear = Math.max(prevGear + 1, 1); // Prevent gear from going below 1
-      return newGear;
-    });
+    setGear(prevGear => Math.max(prevGear + 1, 1)); // Prevent gear from going below 1
   };
 
   const decrementGear = () => {
-    setGear(prevGear => {
-      const newGear = Math.max(prevGear - 1, 1); // Prevent gear from going below 1
-      return newGear;
-    });
-  }
+    setGear(prevGear => Math.max(prevGear - 1, 1)); // Prevent gear from going below 1
+  };
 
   return (
     <div>
@@ -126,8 +120,8 @@ function App() {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button onClick={() => {setLeft(false), setConnected(true), joinRoom()}} disabled={roomFull || connected}>Connect to room</button>
-      <button onClick={() => {setLeft(true), setConnected(false), leaveRoom()}}>Leave room</button>
+      <button onClick={joinRoom} disabled={roomFull || connected}>Connect to room</button>
+      <button onClick={leaveRoom} disabled={!connected}>Leave room</button>
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
       <button onClick={incrementLevel}>Level up</button>
@@ -139,15 +133,12 @@ function App() {
       <h3><b>My stats: Level - {level}, Gear - {gear}</b></h3>
       <h3>Player Stats:</h3>
       {Object.entries(players).map(([playerName, { level, gear }]) => (
-      <div key={playerName}>
-        {playerName === name || left ? (
-          <></>
-        ) : (
-          <>Player {playerName} - Level: {level}, Gear: {gear}</>
-        )}
-      </div>
-))}
-
+        <div key={playerName}>
+          {playerName === name || left ? null : (
+            <>Player {playerName} - Level: {level}, Gear: {gear}</>
+          )}
+        </div>
+      ))}
     </div>
   );
 }

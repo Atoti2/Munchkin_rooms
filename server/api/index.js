@@ -127,7 +127,7 @@ io.on('connection', (socket) => {
 app.use(express.static(path.join(__dirname, '../client/munchkin/dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/munchkin/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/munchkin', 'index.html'));
 });
 
 server.listen(3001, () => {
