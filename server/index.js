@@ -7,6 +7,8 @@ const { PrismaClient } = require('@prisma/client');
 
 const app = express();
 const server = http.createServer(app);
+const helmet = require('helmet')
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -15,7 +17,19 @@ const io = new Server(server, {
 });
 
 app.use(cors());
-
+app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://*.yourdomain.com"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'", "https://*.yourdomain.com"],
+        fontSrc: ["'self'"],
+        frameSrc: ["'none'"]
+      }
+    }
+  }));
 const prisma = new PrismaClient();
 
 io.on('connection', (socket) => {
@@ -65,7 +79,7 @@ io.on('connection', (socket) => {
   
   socket.on('leave_room', async (data) => {
     const { room, name } = data;
-  
+    
     try {
       socket.leave(room);
       console.log(`Player ${name} left room: ${room}`);
