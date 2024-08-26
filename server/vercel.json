@@ -2,25 +2,25 @@
   "version": 2,
   "builds": [
     {
-      "src": "server/index.js",
+      "src": "index.js",
       "use": "@vercel/node"
     },
     {
-      "src": "client/munchkin/package.json",
+      "src": "../client/munchkin/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "client/munchkin/dist" 
+        "distDir": "../client/munchkin/dist"
       }
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/index.js"
+      "dest": "/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/client/munchkin/dist/$1" 
+      "dest": "../client/munchkin/dist/$1"
     }
   ]
 }
