@@ -2,7 +2,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const path = require('path');
-const helmet = require('helmet'); // Add helmet for better security
+const helmet = require('helmet'); 
 
 const { Server } = require("socket.io");
 const { PrismaClient } = require('@prisma/client');
@@ -17,7 +17,18 @@ const io = new Server(server, {
 });
 
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-inline'", "https://cdn.example.com"],
+        'style-src': ["'self'", "'unsafe-inline'"], // Allow inline styles if necessary
+        'img-src': ["'self'", "data:"], // Allow images from self and data URIs if necessary
+        // Add other directives as needed
+      },
+    },
+  }));
 
 const prisma = new PrismaClient();
 
