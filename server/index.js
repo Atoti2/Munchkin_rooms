@@ -18,17 +18,19 @@ const io = new Server(server, {
 
 app.use(cors());
 app.use(helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'", "https://cdn.example.com"],
-        'style-src': ["'self'", "'unsafe-inline'"], // Allow inline styles if necessary
-        'img-src': ["'self'", "data:"], // Allow images from self and data URIs if necessary
-        // Add other directives as needed
-      },
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      'default-src': ["'self'"],
+      'script-src': ["'self'", "'unsafe-inline'", "https://cdn.example.com"],
+      'style-src': ["'self'", "'unsafe-inline'"], // Allow inline styles if needed
+      'img-src': ["'self'", "data:", "https://munchkin-rooms-jwgzqvy0c-toti2s-projects.vercel.app"], // Allow images from specific source
+      'connect-src': ["'self'", "ws://localhost:3001"], // Allow WebSocket connections if needed
+      // Add other directives as necessary
     },
-  }));
+  },
+}));
+
 
 const prisma = new PrismaClient();
 
