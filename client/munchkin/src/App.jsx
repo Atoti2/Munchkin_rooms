@@ -10,6 +10,7 @@ function App() {
   const [players, setPlayers] = useState({});
   const [roomFull, setRoomFull] = useState(false);
   const [left, setLeft] = useState(false)
+  const [connected, setConnected] =useState(false)
 
   useEffect(() => {
     // Initialize socket connection
@@ -123,8 +124,8 @@ function App() {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button onClick={() => {setLeft(false), joinRoom()}} disabled={roomFull || !left}>Connect to room</button>
-      <button onClick={() => {setLeft(true), leaveRoom()}}>Leave room</button>
+      <button onClick={() => {setLeft(false), setConnected(true), joinRoom()}} disabled={roomFull || connected}>Connect to room</button>
+      <button onClick={() => {setLeft(true), setConnected(false), leaveRoom()}}>Leave room</button>
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
       <button onClick={incrementLevel}>Level up</button>
