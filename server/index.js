@@ -23,10 +23,13 @@ app.use(helmet({
     directives: {
       'default-src': ["'self'"],
       'script-src': ["'self'", "'unsafe-inline'", "https://cdn.example.com"],
-      'style-src': ["'self'", "'unsafe-inline'"], // Allow inline styles if needed
-      'img-src': ["'self'", "data:", "https://munchkin-rooms-jwgzqvy0c-toti2s-projects.vercel.app"], // Allow images from specific source
-      'connect-src': ["'self'", "ws://localhost:3001"], // Allow WebSocket connections if needed
-      // Add other directives as necessary
+      'style-src': ["'self'", "'unsafe-inline'"], 
+      'img-src': ["'self'", "data:", "https://munchkin-rooms.vercel.app"], 
+      'connect-src': ["'self'", "ws://localhost:3001"], 
+      'font-src': ["'self'"], // Allow fonts if used
+      'object-src': ["'none'"], // Prevent embedding of Flash or other plugins
+      'base-uri': ["'self'"], // Restrict where a `<base>` tag may be used
+      'form-action': ["'self'"], // Restrict where forms can be submitted
     },
   },
 }));
