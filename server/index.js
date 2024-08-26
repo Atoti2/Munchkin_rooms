@@ -16,7 +16,11 @@ const io = new Server(server, {
   }
 });
 
-app.use(cors());
+app.use(cors({
+  origin: "https://munchkin-rooms.vercel.app",
+  methods: ["GET", "POST"]
+}));
+
 app.use(helmet({
   contentSecurityPolicy: {
     useDefaults: true,
