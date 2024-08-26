@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
 import io from 'socket.io-client';
-
 function App() {
   const [socket, setSocket] = useState(null);
   const [level, setLevel] = useState(1);
@@ -13,12 +12,12 @@ function App() {
   const [connected, setConnected] = useState(false);
 
   // Use environment variable for socket URL
-  const SOCKET_URL = "http://localhost:3001";
+  const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "http://localhost:3001";
 
   useEffect(() => {
     // Initialize socket connection
     const socketInstance = io(SOCKET_URL, {
-      //transports: ['websocket'],  Use WebSocket as the primary transport
+      transports: ['websocket'],  
     });
     setSocket(socketInstance);
 
