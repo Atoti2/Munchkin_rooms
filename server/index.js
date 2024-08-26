@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
+const path = require('path');
 const { Server } = require("socket.io");
 const { PrismaClient } = require('@prisma/client');
 
@@ -21,35 +22,27 @@ io.on('connection', (socket) => {
   console.log('New player connected');
 
   socket.on("join_room", async ({ room, name, level, gear }) => {
-    // Check the number of players in the room
     const playerCount = await prisma.player.count({ where: { room } });
     
     if (playerCount >= 6) {
-      // Notify the player that the room is full
       socket.emit('room_full');
       return;
     }
 
-    // Add player to the room
     socket.join(room);
     console.log(`Player ${name} joined room: ${room}`);
 
-    // Add or update player data
     await prisma.player.upsert({
       where: { name },
       update: { level, gear, room },
       create: { name, level, gear, room }
     });
 
-    // Retrieve existing player data for the room
     const players = await prisma.player.findMany({
       where: { room },
     });
 
-    // Emit existing player data to the new player
     socket.emit('initial_data', players);
-
-    // Broadcast the changes to the room
     socket.to(room).emit('receive_changes', { name, level, gear });
   });
 
@@ -57,13 +50,11 @@ io.on('connection', (socket) => {
     const { level, gear, room, name } = data;
 
     try {
-      // Update player data
       await prisma.player.update({
         where: { name },
         data: { level, gear, room },
       });
 
-      // Broadcast the changes to the room
       socket.to(room).emit('receive_changes', data);
       console.log(data);
     } catch (error) {
@@ -76,22 +67,17 @@ io.on('connection', (socket) => {
     const { room, name } = data;
   
     try {
-      // Remove player from the room
       socket.leave(room);
       console.log(`Player ${name} left room: ${room}`);
   
-      // Remove player data from the database
       await prisma.player.delete({ where: { name } });
   
-      // Notify other players in the room
       socket.to(room).emit('player_left', name);
   
-      // Retrieve updated player data for the room
       const players = await prisma.player.findMany({
         where: { room },
       });
   
-      // Emit updated player data to the remaining players
       socket.to(room).emit('initial_data', players);
   
     } catch (error) {
@@ -101,8 +87,12 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/', (req, res) => {
-    res.send('Server is up and running!');
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../client/munchkin/dist')));
+
+// Catch-all handler to serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/munchkin/dist', 'index.html'));
 });
 
 server.listen(3001, () => {
