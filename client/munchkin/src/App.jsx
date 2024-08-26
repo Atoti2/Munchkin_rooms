@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     // Initialize socket connection
-    const socketInstance = io.connect("wss://munchkin-rooms.vercel.app");
+    const socketInstance = io.connect(SOCKET_URL);
     setSocket(socketInstance);
   
     // Clean up socket connection on component unmount
