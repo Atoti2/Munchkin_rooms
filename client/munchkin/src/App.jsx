@@ -12,16 +12,18 @@ function App() {
   const [left, setLeft] = useState(false)
   const [connected, setConnected] =useState(false)
 
+  const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "http://localhost:3001";
+
   useEffect(() => {
     // Initialize socket connection
-    const socketInstance = io.connect("http://localhost:3001");
+    const socketInstance = io.connect(SOCKET_URL);
     setSocket(socketInstance);
-
+  
     // Clean up socket connection on component unmount
     return () => {
       socketInstance.disconnect();
     };
-  }, []);
+  }, [SOCKET_URL]);
 
   useEffect(() => {
     if (socket) {

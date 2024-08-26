@@ -2,22 +2,23 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const path = require('path');
-const helmet = require('helmet'); 
+const helmet = require('helmet');
 
 const { Server } = require("socket.io");
 const { PrismaClient } = require('@prisma/client');
 
 const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "https://munchkin-rooms.vercel.app/",
+    origin: "https://munchkin-rooms.vercel.app", // Ensure no trailing slash here
     methods: ["GET", "POST"]
   }
 });
 
 app.use(cors({
-  origin: "https://munchkin-rooms.vercel.app",
+  origin: "https://munchkin-rooms.vercel.app", // Ensure no trailing slash here
   methods: ["GET", "POST"]
 }));
 
@@ -27,34 +28,33 @@ app.use(helmet({
     directives: {
       'default-src': ["'self'"],
       'script-src': [
-        "'self'", 
-        "'unsafe-inline'", 
-        "https://cdn.example.com", 
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.example.com",
         "https://munchkin-rooms.vercel.app"
       ],
       'style-src': [
-        "'self'", 
-        "'unsafe-inline'", 
-        "https://cdn.example.com", 
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdn.example.com",
         "https://munchkin-rooms.vercel.app"
       ],
       'img-src': [
-        "'self'", 
-        "data:", 
+        "'self'",
+        "data:",
         "https://munchkin-rooms.vercel.app"
       ],
       'connect-src': [
-        "'self'", 
+        "'self'",
         "wss://munchkin-rooms.vercel.app" // Secure WebSocket for production
       ],
-      'font-src': ["'self'"], 
-      'object-src': ["'none'"], 
-      'base-uri': ["'self'"], 
+      'font-src': ["'self'"],
+      'object-src': ["'none'"],
+      'base-uri': ["'self'"],
       'form-action': ["'self'"],
     },
   },
 }));
-
 
 const prisma = new PrismaClient();
 
