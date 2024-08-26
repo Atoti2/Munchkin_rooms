@@ -22,14 +22,31 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       'default-src': ["'self'"],
-      'script-src': ["'self'", "'unsafe-inline'", "https://cdn.example.com"],
-      'style-src': ["'self'", "'unsafe-inline'"], 
-      'img-src': ["'self'", "data:", "https://munchkin-rooms.vercel.app"], 
-      'connect-src': ["'self'", "ws://localhost:3001"], 
-      'font-src': ["'self'"], // Allow fonts if used
-      'object-src': ["'none'"], // Prevent embedding of Flash or other plugins
-      'base-uri': ["'self'"], // Restrict where a `<base>` tag may be used
-      'form-action': ["'self'"], // Restrict where forms can be submitted
+      'script-src': [
+        "'self'", 
+        "'unsafe-inline'", 
+        "https://cdn.example.com", 
+        "https://munchkin-rooms.vercel.app"
+      ],
+      'style-src': [
+        "'self'", 
+        "'unsafe-inline'", 
+        "https://cdn.example.com", 
+        "https://munchkin-rooms.vercel.app"
+      ],
+      'img-src': [
+        "'self'", 
+        "data:", 
+        "https://munchkin-rooms.vercel.app"
+      ],
+      'connect-src': [
+        "'self'", 
+        "wss://munchkin-rooms.vercel.app" // Secure WebSocket for production
+      ],
+      'font-src': ["'self'"], 
+      'object-src': ["'none'"], 
+      'base-uri': ["'self'"], 
+      'form-action': ["'self'"],
     },
   },
 }));
