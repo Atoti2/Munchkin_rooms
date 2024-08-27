@@ -108,7 +108,23 @@ function App() {
   const decrementGear = () => {
     setGear(prevGear => Math.max(prevGear - 1, 0)); // Prevent gear from going below 1
   };
+  useEffect(() => {
+    // Handle page unload event to notify server
+    const handleBeforeUnload = () => {
+      if (connected) {
+        socket.emit('leave_room', { room, name });
+      }
+    };
 
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      if (connected) {
+        socket.emit('leave_room', { room, name });
+      }
+    };
+  }, [connected, room, name, socket]);
   return (
     <div className='bg-zinc-800 min-h-screen  m-auto p-5 font-mono text-slate-100'>
       <div className='flex gap-5 flex-wrap mb-5'>
@@ -158,9 +174,7 @@ function App() {
         </div>
         </div>
         <p className='italic text-xl font-bold text-violet-500 mt-5'>Power: {gear + level}</p>
-      
       </div>
-  
       <br />
       <div className='flex flex-wrap gap-8 justify-center items-start'>
   {Object.entries(players).map(([playerName, { level, gear }]) => (
