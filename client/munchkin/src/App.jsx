@@ -157,26 +157,27 @@ function App() {
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
       <div className={!connected ? 'hidden' : 'block'}>
-        <h3 className='text-xl font-bold'>MY STATS</h3>
+   
         <div>
-          <p className='italic text-lg font-bold text-violet-500'>Level: {level}</p>
-          <div className='flex gap-5 ml-3'>
-            <button onClick={incrementLevel}>Level up</button>
-            <button onClick={decrementLevel}>Level down</button>
+          <p className=' text-lg font-bold text-violet-500'>Level: <span className='text-slate-100'>{level}</span></p>
+        
+          <div className='flex gap-5 ml-3 font-semibold'>
+            <button className='bg-violet-500 text-slate-100 p-2 rounded-lg' onClick={incrementLevel}>Level up</button>
+            <button className="bg-violet-500 text-slate-100 p-2 rounded-lg" onClick={decrementLevel}>Level down</button>
           </div>
         </div>
         <br />
         <div>
-        <p className='italic text-lg font-bold text-violet-500'>  Gear: {gear}</p>
-        <div className='flex gap-5 ml-3'>
-          <button onClick={incrementGear}>Increase Gear</button>
-          <button onClick={decrementGear}>Decrease Gear</button>
+        <p className=' text-lg font-bold text-violet-500'>  Gear: <span className='text-slate-100'>{gear}</span></p>
+        <div className='flex gap-5 ml-3 font-semibold'>
+          <button className='bg-violet-500 text-slate-100 p-2 rounded-lg' onClick={incrementGear}>Increase Gear</button>
+          <button className='bg-violet-500 text-slate-100 p-2 rounded-lg' onClick={decrementGear}>Decrease Gear</button>
         </div>
         </div>
-        <p className='italic text-xl font-bold text-violet-500 mt-5'>Power: {gear + level}</p>
+        <p className='text-xl font-bold text-violet-500 mt-5'>Power: <span className='text-slate-100'>{gear + level}</span></p>
       </div>
       <br />
-      <div className='flex flex-wrap gap-8 justify-center items-start'>
+      <div className='flex flex-wrap gap-8 '>
   {Object.entries(players).map(([playerName, { level, gear }]) => (
     <div key={playerName} className='w-full sm:w-auto'>
       {playerName === name || left ? null : (
