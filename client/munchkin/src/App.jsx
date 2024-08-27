@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import io from 'socket.io-client';
+
 function App() {
   const [socket, setSocket] = useState(null);
   const [level, setLevel] = useState(1);
@@ -109,35 +110,64 @@ function App() {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Room..."
-        value={room}
-        onChange={(e) => setRoom(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Name..."
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <button onClick={() => { joinRoom(); setLeft(false) }} disabled={roomFull || connected}>Connect to room</button>
-      <button onClick={() => { leaveRoom(); setLeft(true) }} disabled={!connected}>Leave room</button>
+    <div className='bg-zinc-800 min-h-screen  m-auto p-5 font-mono text-slate-100'>
+      <div className='flex gap-5 flex-wrap mb-5'>
+        <div className='flex flex-col'>
+          <label className='text-lg' htmlFor="room">Room</label>
+          <input
+            className='rounded-lg p-3 text-xl text-slate-900'
+            type="text"
+            placeholder="Room number"
+            value={room}
+            onChange={(e) => setRoom(e.target.value)}
+          />
+        </div>
+        <div className='flex flex-col'>
+          <label className='text-lg' htmlFor="name">Name</label>
+          <input
+            className='rounded-lg p-3 text-xl text-slate-900'
+            type="text"
+            placeholder="Player name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className='gap-5 flex'>
+        <button className='text-green-600 font-semibold text-lg disabled:text-gray-500' onClick={() => { joinRoom(); setLeft(false) }} disabled={roomFull || connected}>Connect to room</button>
+        <button className='text-red-600 font-semibold text-lg disabled:text-gray-500' onClick={() => { leaveRoom(); setLeft(true) }} disabled={!connected}>Leave room</button>
+      </div>
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
-      <button onClick={incrementLevel}>Level up</button>
-      <button onClick={decrementLevel}>Level down</button>
+      <h3 className='text-xl font-bold'>MY STATS</h3>
+      <div>
+        <p className='italic text-lg font-bold text-violet-500'>Level: {level}</p>
+        <div className='flex gap-5 ml-3'>
+          <button onClick={incrementLevel}>Level up</button>
+          <button onClick={decrementLevel}>Level down</button>
+        </div>
+      </div>
       <br />
-      <button onClick={incrementGear}>Increase Gear</button>
-      <button onClick={decrementGear}>Decrease Gear</button>
+      <div>
+      <p className='italic text-lg font-bold text-violet-500'>  Gear: {gear}</p>
+      <div className='flex gap-5 ml-3'>
+        <button onClick={incrementGear}>Increase Gear</button>
+        <button onClick={decrementGear}>Decrease Gear</button>
+      </div>
+      </div>
+      
       <br />
-      <h3><b>My stats: Level - {level}, Gear - {gear}</b></h3>
-      <h3>Player Stats:</h3>
       {Object.entries(players).map(([playerName, { level, gear }]) => (
         <div key={playerName}>
           {playerName === name || left ? null : (
-            <>Player {playerName} - Level: {level}, Gear: {gear}</>
+            <div className='bg-rose-700 w-fit p-8 rounded-lg'>
+              <h3 className='font-bold text-3xl'>{playerName}</h3>
+              <div className='flex justify-center items-center flex-col'>
+                <p className='italic text-lg font-bold'>Level: {level}</p>
+                <p className='italic text-lg font-bold'>Gear: {gear}</p>
+                <p className='italic text-lg font-bold'>Power: {level + gear}</p>
+              </div>
+            </div>
           )}
         </div>
       ))}
