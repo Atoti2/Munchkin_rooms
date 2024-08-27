@@ -30,31 +30,33 @@ app.use(helmet({
       'default-src': ["'self'"],
       'script-src': [
         "'self'",
-        "'unsafe-inline'",  // This allows inline scripts (not recommended for production)
-        "https://munchkin-rooms.onrender.com/"  // Allow scripts from your frontend domain
+        "'unsafe-inline'",  // Allows inline scripts (not recommended for production)
+        "https://munchkin-rooms.onrender.com"  // Allow scripts from your frontend domain
       ],
       'style-src': [
         "'self'",
-        "'unsafe-inline'",  // This allows inline styles (not recommended for production)
-        "https://munchkin-rooms.onrender.com/"
+        "'unsafe-inline'",  // Allows inline styles (not recommended for production)
+        "https://munchkin-rooms.onrender.com"
       ],
       'img-src': [
         "'self'",
-        "data:",  // Allow inline images using data URIs
-        "https://munchkin-rooms.onrender.com/"
+        "data:",  // Allows inline images using data URIs
+        "https://munchkin-rooms.onrender.com"
       ],
       'connect-src': [
         "'self'",
-        "wss://munchkin-rooms.onrender.com/",  // Allow WebSocket connections
-        "https://munchkin-rooms.onrender.com/"
+        "wss://munchkin-rooms.onrender.com",  // Allow WebSocket connections to your domain
+        "https://munchkin-rooms.onrender.com",
+        "wss://munchkin.onrender.com"  // Add any additional WebSocket URLs here
       ],
-      'font-src': ["'self'", "https://munchkin-rooms.onrender.com/"],
+      'font-src': ["'self'", "https://munchkin-rooms.onrender.com"],
       'object-src': ["'none'"],
       'base-uri': ["'self'"],
       'form-action': ["'self'"],
     },
   },
 }));
+
 
 
 const prisma = new PrismaClient();

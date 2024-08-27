@@ -12,7 +12,7 @@ function App() {
   const [connected, setConnected] = useState(false);
 
   // Use environment variable for socket URL
-  const SOCKET_URL = "https://munchkin-rooms.onrender.com"
+  const SOCKET_URL = "https://munchkin.onrender.com"
 
   useEffect(() => {
     // Initialize socket connection
