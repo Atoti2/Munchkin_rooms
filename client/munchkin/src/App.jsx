@@ -122,8 +122,8 @@ function App() {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-      <button onClick={joinRoom} disabled={roomFull || connected}>Connect to room</button>
-      <button onClick={leaveRoom} disabled={!connected}>Leave room</button>
+      <button onClick={() => { joinRoom(); setLeft(false) }} disabled={roomFull || connected}>Connect to room</button>
+      <button onClick={() => { leaveRoom(); setLeft(true) }} disabled={!connected}>Leave room</button>
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
       <button onClick={incrementLevel}>Level up</button>
