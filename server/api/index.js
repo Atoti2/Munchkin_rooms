@@ -1,3 +1,4 @@
+// Remove serverless-http and export the server directly
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -5,7 +6,6 @@ const path = require('path');
 const helmet = require('helmet');
 const { Server } = require("socket.io");
 const { PrismaClient } = require('@prisma/client');
-const serverless = require('serverless-http'); // Added
 
 const app = express();
 const server = http.createServer(app);
@@ -129,5 +129,8 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/munchkin/dist', 'index.html'));
 });
 
-// Export serverless handler
-module.exports.handler = serverless(app); 
+
+const PORT = process.env.PORT || 3001
+server.listen(PORT, () => {
+  console.log('Server listening on port 3001');
+});
