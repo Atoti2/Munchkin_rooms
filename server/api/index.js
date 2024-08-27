@@ -30,22 +30,22 @@ app.use(helmet({
         "'self'",
         "'unsafe-inline'",
         "https://cdn.example.com",
-        "https://munchkin-rooms.vercel.app"
+        "https://munchkin-rooms.onrender.com"
       ],
       'style-src': [
         "'self'",
         "'unsafe-inline'",
         "https://cdn.example.com",
-        "https://munchkin-rooms.vercel.app"
+        "https://munchkin-rooms.onrender.com"
       ],
       'img-src': [
         "'self'",
         "data:",
-        "https://munchkin-rooms.vercel.app"
+        "https://munchkin-rooms.onrender.com"
       ],
       'connect-src': [
         "'self'",
-        "wss://munchkin-rooms.vercel.app" // Secure WebSocket for production
+        "wss://https://munchkin-rooms.onrender.com" // Secure WebSocket for production
       ],
       'font-src': ["'self'"],
       'object-src': ["'none'"],
