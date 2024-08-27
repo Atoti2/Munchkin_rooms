@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 function App() {
   const [socket, setSocket] = useState(null);
   const [level, setLevel] = useState(1);
-  const [gear, setGear] = useState(1);
+  const [gear, setGear] = useState(0);
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [players, setPlayers] = useState({});
@@ -106,7 +106,7 @@ function App() {
   };
 
   const decrementGear = () => {
-    setGear(prevGear => Math.max(prevGear - 1, 1)); // Prevent gear from going below 1
+    setGear(prevGear => Math.max(prevGear - 1, 0)); // Prevent gear from going below 1
   };
 
   return (
@@ -125,6 +125,7 @@ function App() {
         <div className='flex flex-col'>
           <label className='text-lg' htmlFor="name">Name</label>
           <input
+            disabled={connected}
             className='rounded-lg p-3 text-xl text-slate-900'
             type="text"
             placeholder="Player name"
@@ -139,38 +140,45 @@ function App() {
       </div>
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
-      <h3 className='text-xl font-bold'>MY STATS</h3>
-      <div>
-        <p className='italic text-lg font-bold text-violet-500'>Level: {level}</p>
+      <div className={!connected ? 'hidden' : 'block'}>
+        <h3 className='text-xl font-bold'>MY STATS</h3>
+        <div>
+          <p className='italic text-lg font-bold text-violet-500'>Level: {level}</p>
+          <div className='flex gap-5 ml-3'>
+            <button onClick={incrementLevel}>Level up</button>
+            <button onClick={decrementLevel}>Level down</button>
+          </div>
+        </div>
+        <br />
+        <div>
+        <p className='italic text-lg font-bold text-violet-500'>  Gear: {gear}</p>
         <div className='flex gap-5 ml-3'>
-          <button onClick={incrementLevel}>Level up</button>
-          <button onClick={decrementLevel}>Level down</button>
+          <button onClick={incrementGear}>Increase Gear</button>
+          <button onClick={decrementGear}>Decrease Gear</button>
         </div>
-      </div>
-      <br />
-      <div>
-      <p className='italic text-lg font-bold text-violet-500'>  Gear: {gear}</p>
-      <div className='flex gap-5 ml-3'>
-        <button onClick={incrementGear}>Increase Gear</button>
-        <button onClick={decrementGear}>Decrease Gear</button>
-      </div>
-      </div>
+        </div>
+        <p className='italic text-xl font-bold text-violet-500 mt-5'>Power: {gear + level}</p>
       
+      </div>
+  
       <br />
-      {Object.entries(players).map(([playerName, { level, gear }]) => (
-        <div key={playerName}>
-          {playerName === name || left ? null : (
-            <div className='bg-rose-700 w-fit p-8 rounded-lg'>
-              <h3 className='font-bold text-3xl'>{playerName}</h3>
-              <div className='flex justify-center items-center flex-col'>
-                <p className='italic text-lg font-bold'>Level: {level}</p>
-                <p className='italic text-lg font-bold'>Gear: {gear}</p>
-                <p className='italic text-lg font-bold'>Power: {level + gear}</p>
-              </div>
-            </div>
-          )}
+      <div className='flex flex-wrap gap-8 justify-center items-start'>
+  {Object.entries(players).map(([playerName, { level, gear }]) => (
+    <div key={playerName} className='w-full sm:w-auto'>
+      {playerName === name || left ? null : (
+        <div className='bg-rose-700 w-full sm:w-fit p-8 rounded-lg'>
+          <h3 className='font-bold text-3xl'>{playerName}</h3>
+          <div className='flex justify-center items-center flex-col'>
+            <p className='italic text-lg font-bold'>Level: {level}</p>
+            <p className='italic text-lg font-bold'>Gear: {gear}</p>
+            <p className='italic text-lg font-bold'>Power: {level + gear}</p>
+          </div>
         </div>
-      ))}
+      )}
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }
