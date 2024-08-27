@@ -11,13 +11,13 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://munchkin-rooms.vercel.app", // Adjust as needed
+    origin: "https://munchkin-rooms.onrender.com", // Adjust as needed
     methods: ["GET", "POST"]
   }
 });
 
 app.use(cors({
-  origin: "https://munchkin-rooms.vercel.app", // Adjust as needed
+  origin: "https://munchkin-rooms.onrender.com", // Adjust as needed
   methods: ["GET", "POST"]
 }));
 
