@@ -21,6 +21,8 @@ app.use(cors({
   methods: ["GET", "POST"]
 }));
 
+
+
 app.use(helmet({
   contentSecurityPolicy: {
     useDefaults: true,
@@ -28,32 +30,32 @@ app.use(helmet({
       'default-src': ["'self'"],
       'script-src': [
         "'self'",
-        "'unsafe-inline'",
-        "https://cdn.example.com",
-        "https://munchkin-rooms.onrender.com"
+        "'unsafe-inline'",  // This allows inline scripts (not recommended for production)
+        "https://munchkin-rooms.onrender.com/"  // Allow scripts from your frontend domain
       ],
       'style-src': [
         "'self'",
-        "'unsafe-inline'",
-        "https://cdn.example.com",
-        "https://munchkin-rooms.onrender.com"
+        "'unsafe-inline'",  // This allows inline styles (not recommended for production)
+        "https://munchkin-rooms.onrender.com/"
       ],
       'img-src': [
         "'self'",
-        "data:",
-        "https://munchkin-rooms.onrender.com"
+        "data:",  // Allow inline images using data URIs
+        "https://munchkin-rooms.onrender.com/"
       ],
       'connect-src': [
         "'self'",
-        "wss://https://munchkin-rooms.onrender.com" // Secure WebSocket for production
+        "wss://munchkin-rooms.onrender.com/",  // Allow WebSocket connections
+        "https://munchkin-rooms.onrender.com/"
       ],
-      'font-src': ["'self'"],
+      'font-src': ["'self'", "https://munchkin-rooms.onrender.com/"],
       'object-src': ["'none'"],
       'base-uri': ["'self'"],
       'form-action': ["'self'"],
     },
   },
 }));
+
 
 const prisma = new PrismaClient();
 
