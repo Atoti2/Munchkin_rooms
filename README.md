@@ -1,6 +1,6 @@
 # Munchkin Board Game Web App
 
-Welcome to the **Munchkin Board Game Web App**! This web application allows players to enjoy the classic card game *Munchkin* in a digital format, where users can join rooms, upgrade their levels and gear, and view other players' stats in real-time.
+Welcome to the **Munchkin Board Game Web App**! This web application allows players to enhance their *Munchkin* gameplay by keeping track of their levels, gear, and stats in a digital format. Users can join rooms, manage their character's progress, and view other players' stats in real-time while playing the physical game.
 
 ## Table of Contents
 
