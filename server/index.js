@@ -21,8 +21,6 @@ app.use(cors({
   methods: ["GET", "POST"]
 }));
 
-
-
 app.use(helmet({
   contentSecurityPolicy: {
     useDefaults: true,
@@ -56,8 +54,6 @@ app.use(helmet({
     },
   },
 }));
-
-
 
 const prisma = new PrismaClient();
 

@@ -125,6 +125,7 @@ function App() {
       }
     };
   }, [connected, room, name, socket]);
+  
   return (
     <div className='bg-zinc-800 min-h-screen  m-auto p-5 font-mono text-slate-100'>
       <div className='flex gap-5 flex-wrap mb-5'>
@@ -156,39 +157,68 @@ function App() {
       </div>
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
-      <div className={!connected ? 'hidden' : 'block'}>
-   
-        <div>
-          <p className=' text-lg font-bold text-violet-500'>Level: <span className='text-slate-100'>{level}</span></p>
+      <div className={`transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-fit rounded-xl shadow-xl`}>
+        <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide'>You</h1>
         
-          <div className='flex gap-5 ml-3 font-semibold'>
-            <button className='bg-violet-500 text-slate-100 p-2 rounded-lg' onClick={incrementLevel}>Level up</button>
-            <button className="bg-violet-500 text-slate-100 p-2 rounded-lg" onClick={decrementLevel}>Level down</button>
+        <div className='mt-6'>
+          <p className='text-lg font-bold text-violet-300'>Level</p>
+          <div className='flex gap-6 font-semibold items-center'>
+            <button 
+              className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
+              onClick={decrementLevel}>
+              -
+            </button>
+            <span className='text-slate-100 text-3xl'>{level}</span>
+            <button 
+              className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
+              onClick={incrementLevel}>
+              +
+            </button>
           </div>
         </div>
-        <br />
-        <div>
-        <p className=' text-lg font-bold text-violet-500'>  Gear: <span className='text-slate-100'>{gear}</span></p>
-        <div className='flex gap-5 ml-3 font-semibold'>
-          <button className='bg-violet-500 text-slate-100 p-2 rounded-lg' onClick={incrementGear}>Increase Gear</button>
-          <button className='bg-violet-500 text-slate-100 p-2 rounded-lg' onClick={decrementGear}>Decrease Gear</button>
+
+        <div className='mt-8'>
+          <p className='text-lg font-bold text-violet-300'>Gear</p>
+          <div className='flex gap-6 font-semibold items-center'>
+            <button 
+              className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
+              onClick={decrementGear}>
+              -
+            </button>
+            <span className='text-slate-100 text-3xl'>{gear}</span>
+            <button 
+              className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
+              onClick={incrementGear}>
+              +
+            </button>
+          </div>
         </div>
-        </div>
-        <p className='text-xl font-bold text-violet-500 mt-5'>Power: <span className='text-slate-100'>{gear + level}</span></p>
-      </div>
+
+        <p className='text-xl font-bold text-violet-300 mt-8'>Power: <span className='text-slate-100'>{gear + level}</span></p>
+    </div>
+
+
       <br />
       <div className='flex flex-wrap gap-8 '>
   {Object.entries(players).map(([playerName, { level, gear }]) => (
     <div key={playerName} className='w-full sm:w-auto'>
       {playerName === name || left ? null : (
-        <div className='bg-rose-700 w-full sm:w-fit p-8 rounded-lg'>
-          <h3 className='font-bold text-3xl'>{playerName}</h3>
-          <div className='flex justify-center items-center flex-col'>
-            <p className='italic text-lg font-bold'>Level: {level}</p>
-            <p className='italic text-lg font-bold'>Gear: {gear}</p>
-            <p className='italic text-lg font-bold'>Power: {level + gear}</p>
-          </div>
-        </div>
+      <div className={`bg-gradient-to-br from-rose-700 to-red-600 w-full sm:w-fit p-8 rounded-xl shadow-lg transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'}`}>
+      <h3 className='font-extrabold text-4xl text-white tracking-wide text-center mb-6'>{playerName}</h3>
+      
+      <div className='flex justify-center items-center flex-col gap-4'>
+        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
+          Level: <span className="text-white">{level}</span>
+        </p>
+        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
+          Gear: <span className="text-white">{gear}</span>
+        </p>
+        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
+          Power: <span className="text-white">{level + gear}</span>
+        </p>
+      </div>
+    </div>
+    
       )}
     </div>
   ))}
