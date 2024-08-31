@@ -52,6 +52,7 @@ function App() {
       // Handle room full
       const handleRoomFull = () => {
         setRoomFull(true);
+        
       };
 
       // Listen for changes, initial data, and room full notifications
@@ -79,8 +80,13 @@ function App() {
 
   const leaveRoom = () => {
     socket.emit('leave_room', { room, name });
-    setLeft(true); // Mark as left
-    setConnected(false); // Mark as disconnected
+    setLeft(true); 
+    setConnected(false);
+    if(roomFull){
+      setConnected(false)
+      setLeft(true)
+      setRoomFull(false)
+    }
   };
 
   const sendChanges = useCallback(() => {
@@ -110,7 +116,6 @@ function App() {
   };
 
   const handleDeath = () => {
-    setLevel(level); // Optionally set level or take other actions for "death"
     setGear(0);
   };
   
@@ -161,7 +166,9 @@ function App() {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className={`flex gap-4 items-center mt-0 sm:mt-[28px] ${!connected ? 'hidden' : ''}`}>
+        {
+        !roomFull && (
+          <div className={`flex gap-4 items-center mt-0 sm:mt-[28px] ${!connected ? 'hidden' : ''}`}>
           <button 
             className="bg-red-600 active:bg-red-800 text-slate-100 p-3 text-xl rounded-lg transition-transform transform" 
             onClick={handleDeath}>
@@ -173,6 +180,9 @@ function App() {
             Reset
           </button>
         </div>
+        )
+        }
+       
       </div>
       <div className='gap-5 flex'>
         <button className='text-green-600 font-semibold text-lg disabled:text-gray-500' onClick={() => { joinRoom(); setLeft(false) }} disabled={roomFull || connected}>Connect to room</button>
@@ -182,7 +192,7 @@ function App() {
       
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
-      <div className={`transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-full md:w-1/3 lg:w-1/4 rounded-xl shadow-xl`}>
+      <div className={` ${roomFull ? 'hidden' : ''} transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-full md:w-1/3 lg:w-1/4 rounded-xl shadow-xl`}>
         <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide text-center'>You</h1>
   
         <div className='mt-6'>
