@@ -13,12 +13,12 @@ function App() {
   const [connected, setConnected] = useState(false);
 
   // Use environment variable for socket URL
-  const SOCKET_URL = "https://munchkin.onrender.com"
+  const SOCKET_URL = "https://munchkin.onrender.com";
 
   useEffect(() => {
     // Initialize socket connection
     const socketInstance = io(SOCKET_URL, {
-      transports: ['websocket'],  
+      transports: ['websocket'],
     });
     setSocket(socketInstance);
 
@@ -106,8 +106,19 @@ function App() {
   };
 
   const decrementGear = () => {
-    setGear(prevGear => Math.max(prevGear - 1, 0)); // Prevent gear from going below 1
+    setGear(prevGear => Math.max(prevGear - 1, 0)); // Prevent gear from going below 0
   };
+
+  const handleDeath = () => {
+    setLevel(level); // Optionally set level or take other actions for "death"
+    setGear(0);
+  };
+  
+  const handleReset = () => {
+    setLevel(1); // Reset to starting level value
+    setGear(0); // Reset to starting gear value
+  };
+
   useEffect(() => {
     // Handle page unload event to notify server
     const handleBeforeUnload = () => {
@@ -127,8 +138,8 @@ function App() {
   }, [connected, room, name, socket]);
   
   return (
-    <div className='bg-zinc-800 min-h-screen  m-auto p-5 font-mono text-slate-100'>
-      <div className='flex gap-5 flex-wrap mb-5'>
+    <div className='bg-zinc-800 min-h-screen m-auto p-5 font-mono text-slate-100'>
+      <div className='flex gap-5 flex-wrap mb-5 '>
         <div className='flex flex-col'>
           <label className='text-lg' htmlFor="room">Room</label>
           <input
@@ -150,85 +161,96 @@ function App() {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
+        <div className={`flex gap-4 items-center mt-0 sm:mt-[28px] ${!connected ? 'hidden' : ''}`}>
+          <button 
+            className="bg-red-600 active:bg-red-800 text-slate-100 p-3 text-xl rounded-lg transition-transform transform" 
+            onClick={handleDeath}>
+            Death
+          </button>
+          <button 
+            className="bg-gray-600  active:bg-gray-800 text-slate-100 p-3 text-xl rounded-lg transition-transform transform" 
+            onClick={handleReset}>
+            Reset
+          </button>
+        </div>
       </div>
       <div className='gap-5 flex'>
         <button className='text-green-600 font-semibold text-lg disabled:text-gray-500' onClick={() => { joinRoom(); setLeft(false) }} disabled={roomFull || connected}>Connect to room</button>
         <button className='text-red-600 font-semibold text-lg disabled:text-gray-500' onClick={() => { leaveRoom(); setLeft(true) }} disabled={!connected}>Leave room</button>
+      
       </div>
+      
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
-      <div className={`transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-full md:w1/3 lg:w-1/4 rounded-xl shadow-xl`}>
-  <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide text-center'>You</h1>
+      <div className={`transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-full md:w-1/3 lg:w-1/4 rounded-xl shadow-xl`}>
+        <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide text-center'>You</h1>
   
-  <div className='mt-6'>
-    <p className='text-lg font-bold text-violet-300 text-center'>Level</p>
-    <div className='flex gap-6 font-semibold items-center justify-center'>
-      <button 
-        className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
-        onClick={decrementLevel}>
-        -
-      </button>
-      <span className='text-slate-100 text-3xl'>{level}</span>
-      <button 
-        className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
-        onClick={incrementLevel}>
-        +
-      </button>
-    </div>
-  </div>
+        <div className='mt-6'>
+          <p className='text-lg font-bold text-violet-300 text-center'>Level</p>
+          <div className='flex gap-6 font-semibold items-center justify-center'>
+            <button 
+              className="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
+              onClick={decrementLevel}>
+              -
+            </button>
+            <span className='text-slate-100 text-3xl'>{level}</span>
+            <button 
+              className='bg-violet-500 hover:bg-violet-600 active:bg-violet-700 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
+              onClick={incrementLevel}>
+              +
+            </button>
+          </div>
+        </div>
 
-  <div className='mt-8'>
-    <p className='text-lg font-bold text-violet-300 text-center'>Gear</p>
-    <div className='flex gap-6 font-semibold items-center justify-center'>
-      <button 
-        className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
-        onClick={decrementGear}>
-        -
-      </button>
-      <span className='text-slate-100 text-3xl'>{gear}</span>
-      <button 
-        className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
-        onClick={incrementGear}>
-        +
-      </button>
-    </div>
-  </div>
+        <div className='mt-8'>
+          <p className='text-lg font-bold text-violet-300 text-center'>Gear</p>
+          <div className='flex gap-6 font-semibold items-center justify-center'>
+            <button 
+              className="bg-violet-500 hover:bg-violet-600 active:bg-violet-700 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
+              onClick={decrementGear}>
+              -
+            </button>
+            <span className='text-slate-100 text-3xl'>{gear}</span>
+            <button 
+              className='bg-violet-500 hover:bg-violet-600 active:bg-violet-700 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
+              onClick={incrementGear}>
+              +
+            </button>
+          </div>
+        </div>
 
-  <div className='mt-8 bg-gradient-to-r from-cyan-500 to-teal-600 p-4 rounded-lg shadow-lg transition-transform transform hover:scale-110'>
-    <p className='text-2xl font-extrabold text-white text-center'>
-      Power: <span className='text-slate-100'>{gear + level}</span>
-    </p>
-  </div>
-</div>
-
-
+        <div className='mt-8 bg-gradient-to-r from-cyan-500 to-teal-600 p-4 rounded-lg shadow-lg transition-transform transform hover:scale-110'>
+          <p className='text-2xl font-extrabold text-white text-center'>
+            Power: <span className='text-slate-100'>{gear + level}</span>
+          </p>
+        </div>
+    
+      </div>
 
       <br />
-      <div className='flex flex-wrap gap-8 '>
-  {Object.entries(players).map(([playerName, { level, gear }]) => (
-    <div key={playerName} className='w-full sm:w-auto'>
-      {playerName === name || left ? null : (
-      <div className={`bg-gradient-to-br from-rose-700 to-red-600 w-full sm:w-fit p-8 rounded-xl shadow-lg transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'}`}>
-      <h3 className='font-extrabold text-4xl text-white tracking-wide text-center mb-6'>{playerName}</h3>
-      
-      <div className='flex justify-center items-center flex-col gap-4'>
-        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
-          Power: <span className="text-white">{level + gear}</span>
-        </p>
-        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
-          Level: <span className="text-white">{level}</span>
-        </p>
-        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
-          Gear: <span className="text-white">{gear}</span>
-        </p>
+      <div className='flex flex-wrap gap-8'>
+        {Object.entries(players).map(([playerName, { level, gear }]) => (
+          <div key={playerName} className='w-full sm:w-auto'>
+            {playerName === name || left ? null : (
+              <div className={`bg-gradient-to-br from-rose-700 to-red-600 w-full sm:w-fit p-8 rounded-xl shadow-lg transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'}`}>
+                <h3 className='font-extrabold text-4xl text-white tracking-wide text-center mb-6'>{playerName}</h3>
+                
+                <div className='flex justify-center items-center flex-col gap-4'>
+                  <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
+                    Power: <span className="text-white">{level + gear}</span>
+                  </p>
+                  <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
+                    Level: <span className="text-white">{level}</span>
+                  </p>
+                  <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
+                    Gear: <span className="text-white">{gear}</span>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-    </div>
-    
-      )}
-    </div>
-  ))}
-</div>
-
     </div>
   );
 }
