@@ -157,12 +157,12 @@ function App() {
       </div>
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
-      <div className={`transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-fit rounded-xl shadow-xl`}>
-  <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide'>You</h1>
+      <div className={`transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-full md:w1/3 lg:w-1/4 rounded-xl shadow-xl`}>
+  <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide text-center'>You</h1>
   
   <div className='mt-6'>
-    <p className='text-lg font-bold text-violet-300'>Level</p>
-    <div className='flex gap-6 font-semibold items-center'>
+    <p className='text-lg font-bold text-violet-300 text-center'>Level</p>
+    <div className='flex gap-6 font-semibold items-center justify-center'>
       <button 
         className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
         onClick={decrementLevel}>
@@ -178,8 +178,8 @@ function App() {
   </div>
 
   <div className='mt-8'>
-    <p className='text-lg font-bold text-violet-300'>Gear</p>
-    <div className='flex gap-6 font-semibold items-center'>
+    <p className='text-lg font-bold text-violet-300 text-center'>Gear</p>
+    <div className='flex gap-6 font-semibold items-center justify-center'>
       <button 
         className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
         onClick={decrementGear}>
@@ -200,7 +200,6 @@ function App() {
     </p>
   </div>
 </div>
-
 
 
 
