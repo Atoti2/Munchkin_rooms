@@ -158,44 +158,50 @@ function App() {
       {roomFull && <p>Room is full. Cannot join.</p>}
       <br />
       <div className={`transition-all duration-500 ease-in-out transform ${!connected ? 'opacity-0 scale-75' : 'opacity-100 scale-100'} bg-gradient-to-br from-blue-900 to-indigo-700 p-8 w-fit rounded-xl shadow-xl`}>
-        <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide'>You</h1>
-        
-        <div className='mt-6'>
-          <p className='text-lg font-bold text-violet-300'>Level</p>
-          <div className='flex gap-6 font-semibold items-center'>
-            <button 
-              className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
-              onClick={decrementLevel}>
-              -
-            </button>
-            <span className='text-slate-100 text-3xl'>{level}</span>
-            <button 
-              className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
-              onClick={incrementLevel}>
-              +
-            </button>
-          </div>
-        </div>
-
-        <div className='mt-8'>
-          <p className='text-lg font-bold text-violet-300'>Gear</p>
-          <div className='flex gap-6 font-semibold items-center'>
-            <button 
-              className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
-              onClick={decrementGear}>
-              -
-            </button>
-            <span className='text-slate-100 text-3xl'>{gear}</span>
-            <button 
-              className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
-              onClick={incrementGear}>
-              +
-            </button>
-          </div>
-        </div>
-
-        <p className='text-xl font-bold text-violet-300 mt-8'>Power: <span className='text-slate-100'>{gear + level}</span></p>
+  <h1 className='font-extrabold text-4xl text-slate-100 tracking-wide'>You</h1>
+  
+  <div className='mt-6'>
+    <p className='text-lg font-bold text-violet-300'>Level</p>
+    <div className='flex gap-6 font-semibold items-center'>
+      <button 
+        className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
+        onClick={decrementLevel}>
+        -
+      </button>
+      <span className='text-slate-100 text-3xl'>{level}</span>
+      <button 
+        className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
+        onClick={incrementLevel}>
+        +
+      </button>
     </div>
+  </div>
+
+  <div className='mt-8'>
+    <p className='text-lg font-bold text-violet-300'>Gear</p>
+    <div className='flex gap-6 font-semibold items-center'>
+      <button 
+        className="bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105" 
+        onClick={decrementGear}>
+        -
+      </button>
+      <span className='text-slate-100 text-3xl'>{gear}</span>
+      <button 
+        className='bg-violet-600 hover:bg-violet-700 active:bg-violet-800 text-slate-100 p-4 text-2xl rounded-lg transition-transform transform hover:scale-105' 
+        onClick={incrementGear}>
+        +
+      </button>
+    </div>
+  </div>
+
+  <div className='mt-8 bg-gradient-to-r from-cyan-500 to-teal-600 p-4 rounded-lg shadow-lg transition-transform transform hover:scale-110'>
+    <p className='text-2xl font-extrabold text-white text-center'>
+      Power: <span className='text-slate-100'>{gear + level}</span>
+    </p>
+  </div>
+</div>
+
+
 
 
       <br />
@@ -208,13 +214,13 @@ function App() {
       
       <div className='flex justify-center items-center flex-col gap-4'>
         <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
+          Power: <span className="text-white">{level + gear}</span>
+        </p>
+        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
           Level: <span className="text-white">{level}</span>
         </p>
         <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
           Gear: <span className="text-white">{gear}</span>
-        </p>
-        <p className='italic text-lg font-bold text-rose-200 bg-rose-800 py-2 px-4 rounded-md shadow-sm w-full text-center transition-transform transform hover:scale-105'>
-          Power: <span className="text-white">{level + gear}</span>
         </p>
       </div>
     </div>
