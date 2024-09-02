@@ -86,24 +86,32 @@ io.on('connection', (socket) => {
       socket.emit('error', 'An error occurred while joining the room.');
     }
   });
-
   socket.on('send_changes', async (data) => {
     const { level, gear, room, name } = data;
-
+  
     try {
-      await prisma.player.update({
+      const player = await prisma.player.findUnique({
         where: { name },
-        data: { level, gear, room },
       });
-
-      socket.to(room).emit('receive_changes', data);
-      console.log(data);
+  
+      if (player) {
+        await prisma.player.update({
+          where: { name },
+          data: { level, gear, room },
+        });
+  
+        socket.to(room).emit('receive_changes', data);
+        console.log(data);
+      } else {
+        console.error(`Player ${name} not found for update.`);
+        socket.emit('error', `Player ${name} not found.`);
+      }
     } catch (error) {
       console.error('Error processing player changes:', error);
       socket.emit('error', 'An error occurred while processing player changes.');
     }
   });
-
+  
   socket.on('leave_room', async (data) => {
     const { room, name } = data;
 

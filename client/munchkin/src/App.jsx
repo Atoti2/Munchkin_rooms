@@ -182,7 +182,6 @@ function App() {
         </div>
         )
         }
-       
       </div>
       <div className='gap-5 flex'>
         <button className='text-green-600 font-semibold text-lg disabled:text-gray-500' onClick={() => { joinRoom(); setLeft(false) }} disabled={roomFull || connected}>Connect to room</button>
